@@ -1,5 +1,5 @@
 #Makefile for TextEditor
-#Создание исполняемого модуля
+#РЎРѕР·РґР°РЅРёРµ РёСЃРїРѕР»РЅСЏРµРјРѕРіРѕ РјРѕРґСѓР»СЏ
 binary: source.c
 	gcc -o program source.c -lncurses
 #End Makefile

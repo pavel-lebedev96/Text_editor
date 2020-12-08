@@ -5,21 +5,21 @@
 #include <string.h>
 #include <curses.h>
 
-//размер буфера
+//СЂР°Р·РјРµСЂ Р±СѓС„РµСЂР°
 #define MAXLEN 1024
 
-//коды символов
+//РєРѕРґС‹ СЃРёРјРІРѕР»РѕРІ
 #define KEY_ESC 27
 #define KEY_NEWLINE 10
 #define KEY_TAB 9
 
-//структура для хранения положения курсора
+//СЃС‚СЂСѓРєС‚СѓСЂР° РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РїРѕР»РѕР¶РµРЅРёСЏ РєСѓСЂСЃРѕСЂР°
 typedef struct
 {
 	int x, y;
 } TCursPos;
 
-//вставка символа в text в позицию pos со сдвигом остальных символов
+//РІСЃС‚Р°РІРєР° СЃРёРјРІРѕР»Р° РІ text РІ РїРѕР·РёС†РёСЋ pos СЃРѕ СЃРґРІРёРіРѕРј РѕСЃС‚Р°Р»СЊРЅС‹С… СЃРёРјРІРѕР»РѕРІ
 bool add_symbol(char c, int text_pos, char *text)
 {
 	int size = (int) strlen(text);
@@ -31,7 +31,7 @@ bool add_symbol(char c, int text_pos, char *text)
 	return true;
 }
 
-//удаление символа из text с позиции pos со сдвигом остальных символов
+//СѓРґР°Р»РµРЅРёРµ СЃРёРјРІРѕР»Р° РёР· text СЃ РїРѕР·РёС†РёРё pos СЃРѕ СЃРґРІРёРіРѕРј РѕСЃС‚Р°Р»СЊРЅС‹С… СЃРёРјРІРѕР»РѕРІ
 bool delete_symbol(int text_pos, char *text)
 {
 	int size = (int) strlen(text);
@@ -42,7 +42,7 @@ bool delete_symbol(int text_pos, char *text)
 	return true;
 }
 
-//загрузка текста из файла с пропуском символа возврата каретки
+//Р·Р°РіСЂСѓР·РєР° С‚РµРєСЃС‚Р° РёР· С„Р°Р№Р»Р° СЃ РїСЂРѕРїСѓСЃРєРѕРј СЃРёРјРІРѕР»Р° РІРѕР·РІСЂР°С‚Р° РєР°СЂРµС‚РєРё
 bool text_input(const char* file_name, char *text)
 {
 	FILE* file = fopen(file_name, "r");
@@ -61,7 +61,7 @@ bool text_input(const char* file_name, char *text)
 	return true;
 }
 
-//запись текста в файл
+//Р·Р°РїРёСЃСЊ С‚РµРєСЃС‚Р° РІ С„Р°Р№Р»
 bool text_output(const char* file_name, char* text)
 {
 	FILE* file = fopen(file_name, "w");
@@ -72,17 +72,17 @@ bool text_output(const char* file_name, char* text)
 	return true;
 }
 
-/*возвращает следующее положение курсора и текста через указатели curs_pos и text_pos в зависимости от текущего символа в text;
-записывает текущее положение курсора в таблицу curs_pos_table*/ 
+/*РІРѕР·РІСЂР°С‰Р°РµС‚ СЃР»РµРґСѓСЋС‰РµРµ РїРѕР»РѕР¶РµРЅРёРµ РєСѓСЂСЃРѕСЂР° Рё С‚РµРєСЃС‚Р° С‡РµСЂРµР· СѓРєР°Р·Р°С‚РµР»Рё curs_pos Рё text_pos РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С‚РµРєСѓС‰РµРіРѕ СЃРёРјРІРѕР»Р° РІ text;
+Р·Р°РїРёСЃС‹РІР°РµС‚ С‚РµРєСѓС‰РµРµ РїРѕР»РѕР¶РµРЅРёРµ РєСѓСЂСЃРѕСЂР° РІ С‚Р°Р±Р»РёС†Сѓ curs_pos_table*/ 
 bool next_pos(TCursPos *curs_pos, int *text_pos, const char* text, TCursPos *curs_pos_table)
 {
 	if (text[*text_pos] == '\0')
 		return false;
 	
-	//получение ширины экрана
+	//РїРѕР»СѓС‡РµРЅРёРµ С€РёСЂРёРЅС‹ СЌРєСЂР°РЅР°
 	int max_x = getmaxx(stdscr);
 
-	//запоминание текущего положения курсора
+	//Р·Р°РїРѕРјРёРЅР°РЅРёРµ С‚РµРєСѓС‰РµРіРѕ РїРѕР»РѕР¶РµРЅРёСЏ РєСѓСЂСЃРѕСЂР°
 	curs_pos_table[*text_pos] = *curs_pos;
 	
 	switch (text[(*text_pos)++])
@@ -95,7 +95,7 @@ bool next_pos(TCursPos *curs_pos, int *text_pos, const char* text, TCursPos *cur
 		while (++curs_pos->x % 8 != 0){}
 		break;
 	
-	//обычный символ
+	//РѕР±С‹С‡РЅС‹Р№ СЃРёРјРІРѕР»
 	default:
 		curs_pos->x++;
 	}
@@ -108,7 +108,7 @@ bool next_pos(TCursPos *curs_pos, int *text_pos, const char* text, TCursPos *cur
 	return true;
 }
 
-//тоже самое, что и next_pos, только с перемещением курсора и обновлением окна
+//С‚РѕР¶Рµ СЃР°РјРѕРµ, С‡С‚Рѕ Рё next_pos, С‚РѕР»СЊРєРѕ СЃ РїРµСЂРµРјРµС‰РµРЅРёРµРј РєСѓСЂСЃРѕСЂР° Рё РѕР±РЅРѕРІР»РµРЅРёРµРј РѕРєРЅР°
 bool move_next_pos(TCursPos* curs_pos, int* text_pos, const char* text, TCursPos* curs_pos_table)
 {
 	if (!next_pos(curs_pos, text_pos, text, curs_pos_table))
@@ -118,8 +118,8 @@ bool move_next_pos(TCursPos* curs_pos, int* text_pos, const char* text, TCursPos
 	return true;
 }
 
-/*возвращает предыдущее положение курсора и текста через указатели curs_pos и text_pos в зависимости от значения, 
-записанного в таблице curs_pos_table*/
+/*РІРѕР·РІСЂР°С‰Р°РµС‚ РїСЂРµРґС‹РґСѓС‰РµРµ РїРѕР»РѕР¶РµРЅРёРµ РєСѓСЂСЃРѕСЂР° Рё С‚РµРєСЃС‚Р° С‡РµСЂРµР· СѓРєР°Р·Р°С‚РµР»Рё curs_pos Рё text_pos РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ Р·РЅР°С‡РµРЅРёСЏ, 
+Р·Р°РїРёСЃР°РЅРЅРѕРіРѕ РІ С‚Р°Р±Р»РёС†Рµ curs_pos_table*/
 bool prev_pos(TCursPos *curs_pos, int *text_pos, const char* text, const TCursPos *curs_pos_table)
 {
 	if (*text_pos == 0)
@@ -128,7 +128,7 @@ bool prev_pos(TCursPos *curs_pos, int *text_pos, const char* text, const TCursPo
 	return true;
 }
 
-//тоже самое, что и prev_pos только с перемещением курсора и обновлением окна
+//С‚РѕР¶Рµ СЃР°РјРѕРµ, С‡С‚Рѕ Рё prev_pos С‚РѕР»СЊРєРѕ СЃ РїРµСЂРµРјРµС‰РµРЅРёРµРј РєСѓСЂСЃРѕСЂР° Рё РѕР±РЅРѕРІР»РµРЅРёРµРј РѕРєРЅР°
 bool move_prev_pos(TCursPos* curs_pos, int* text_pos, const char* text, const TCursPos* curs_pos_table)
 {
 	if (!prev_pos(curs_pos, text_pos, text, curs_pos_table))
@@ -138,7 +138,7 @@ bool move_prev_pos(TCursPos* curs_pos, int* text_pos, const char* text, const TC
 	return true;
 }
 
-//вывод текста с позиции text_pos c возвращением курсора
+//РІС‹РІРѕРґ С‚РµРєСЃС‚Р° СЃ РїРѕР·РёС†РёРё text_pos c РІРѕР·РІСЂР°С‰РµРЅРёРµРј РєСѓСЂСЃРѕСЂР°
 void text_print(const TCursPos *curs_pos, int text_pos, const char* text)
 {
 	printw("%s", text + text_pos);
@@ -146,7 +146,7 @@ void text_print(const TCursPos *curs_pos, int text_pos, const char* text)
 	refresh();
 }
 
-//очистка окна и вывод всего текста
+//РѕС‡РёСЃС‚РєР° РѕРєРЅР° Рё РІС‹РІРѕРґ РІСЃРµРіРѕ С‚РµРєСЃС‚Р°
 void text_print_clear(const TCursPos* curs_pos, const char* text)
 {
 	clear();
@@ -155,46 +155,46 @@ void text_print_clear(const TCursPos* curs_pos, const char* text)
 	refresh();
 }
 
-//вывод на текущие позиции curs_pos и text_pos символа с в окно
+//РІС‹РІРѕРґ РЅР° С‚РµРєСѓС‰РёРµ РїРѕР·РёС†РёРё curs_pos Рё text_pos СЃРёРјРІРѕР»Р° СЃ РІ РѕРєРЅРѕ
 bool insert_char(char c, TCursPos *curs_pos, int *text_pos, char* text, TCursPos* curs_pos_table)
 {
-	//вставка символа в текст
+	//РІСЃС‚Р°РІРєР° СЃРёРјРІРѕР»Р° РІ С‚РµРєСЃС‚
 	if (!add_symbol(c, *text_pos, text))
 		return false;
-	//вывод части текста с новым символом
+	//РІС‹РІРѕРґ С‡Р°СЃС‚Рё С‚РµРєСЃС‚Р° СЃ РЅРѕРІС‹Рј СЃРёРјРІРѕР»РѕРј
 	text_print(curs_pos, *text_pos, text);
-	//переместить курсор на следующий символ
+	//РїРµСЂРµРјРµСЃС‚РёС‚СЊ РєСѓСЂСЃРѕСЂ РЅР° СЃР»РµРґСѓСЋС‰РёР№ СЃРёРјРІРѕР»
 	return move_next_pos(curs_pos, text_pos, text, curs_pos_table);
 }
 
-//удаление символа с предыдущей позиции в окне 
+//СѓРґР°Р»РµРЅРёРµ СЃРёРјРІРѕР»Р° СЃ РїСЂРµРґС‹РґСѓС‰РµР№ РїРѕР·РёС†РёРё РІ РѕРєРЅРµ 
 bool erase_char(TCursPos *curs_pos, int *text_pos, char* text, TCursPos* curs_pos_table)
 {
-	//перемещаемся на предыдущий символ
+	//РїРµСЂРµРјРµС‰Р°РµРјСЃСЏ РЅР° РїСЂРµРґС‹РґСѓС‰РёР№ СЃРёРјРІРѕР»
 	if (!move_prev_pos(curs_pos, text_pos, text, curs_pos_table))
 		return false;	
-	//удаляем символ с текущей позиции
+	//СѓРґР°Р»СЏРµРј СЃРёРјРІРѕР» СЃ С‚РµРєСѓС‰РµР№ РїРѕР·РёС†РёРё
 	delete_symbol(*text_pos, text);	
-	//вывод части текста с новым символом
+	//РІС‹РІРѕРґ С‡Р°СЃС‚Рё С‚РµРєСЃС‚Р° СЃ РЅРѕРІС‹Рј СЃРёРјРІРѕР»РѕРј
 	text_print_clear(curs_pos, text);
 	return true;
 }
 
 int main(int argc, char* argv[])
 {
-	//имя файла
+	//РёРјСЏ С„Р°Р№Р»Р°
 	char file_name[100] = "";
 	
-	//буфер
+	//Р±СѓС„РµСЂ
 	char text[MAXLEN] = "";
 
-	//таблица положений курсора
+	//С‚Р°Р±Р»РёС†Р° РїРѕР»РѕР¶РµРЅРёР№ РєСѓСЂСЃРѕСЂР°
 	TCursPos curs_pos_table[MAXLEN] = { {0, 0} };
 	
-	//текущее положение курсора
+	//С‚РµРєСѓС‰РµРµ РїРѕР»РѕР¶РµРЅРёРµ РєСѓСЂСЃРѕСЂР°
 	TCursPos curs_pos = { 0, 0 };
 	
-	//текущая позиция в тексте
+	//С‚РµРєСѓС‰Р°СЏ РїРѕР·РёС†РёСЏ РІ С‚РµРєСЃС‚Рµ
 	int text_pos = 0;
 	
 	int c;
@@ -205,21 +205,21 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 	
-	//если указан файл, прочитать содержимое
+	//РµСЃР»Рё СѓРєР°Р·Р°РЅ С„Р°Р№Р», РїСЂРѕС‡РёС‚Р°С‚СЊ СЃРѕРґРµСЂР¶РёРјРѕРµ
 	if (argc == 2)
 	{
 		strncpy(file_name, argv[1], 100);
 		text_input(file_name, text);
 	}
 
-	//инициализация
+	//РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
 	initscr();
 	cbreak();
 	keypad(stdscr, true);
 	curs_set(true);
 	noecho();
 	
-	//вывод текста, если он есть
+	//РІС‹РІРѕРґ С‚РµРєСЃС‚Р°, РµСЃР»Рё РѕРЅ РµСЃС‚СЊ
 	if (strlen(text) != 0)
 		text_print_clear(&curs_pos, text);
 	
@@ -243,14 +243,14 @@ int main(int argc, char* argv[])
 	}
 	endwin();
 
-	//если файл не указан при вызове, спросить
+	//РµСЃР»Рё С„Р°Р№Р» РЅРµ СѓРєР°Р·Р°РЅ РїСЂРё РІС‹Р·РѕРІРµ, СЃРїСЂРѕСЃРёС‚СЊ
 	if (strlen(file_name) == 0)
 	{
 		printf("Enter the file name:\n");
 		scanf("%s", file_name);
 	}
 	
-	//вывод текста в файл
+	//РІС‹РІРѕРґ С‚РµРєСЃС‚Р° РІ С„Р°Р№Р»
 	if (text_output(file_name, text))
 		printf("The file is successfully changed or created\n");
 	else
